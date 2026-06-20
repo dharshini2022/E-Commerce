@@ -1,0 +1,10 @@
+2026-06-12 15:18:47.811 +05:30 [INF] User profile is available. Using '/Users/dharshinik/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-06-12 15:18:47.923 +05:30 [INF] Now listening on: http://localhost:5288
+2026-06-12 15:18:47.924 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-12 15:18:47.924 +05:30 [INF] Hosting environment: Development
+2026-06-12 15:18:47.924 +05:30 [INF] Content root path: /Users/dharshinik/Desktop/Presidio/Genspark/Ecommerce/Ecommerce.API
+2026-06-12 15:18:59.184 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5288/swagger/index.html - null null
+2026-06-12 15:18:59.240 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5288/swagger/index.html - 200 null text/html;charset=utf-8 56.4187ms
+2026-06-12 15:18:59.358 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5288/swagger/v1/swagger.json - null null
+2026-06-12 15:18:59.437 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5288/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 79.5873ms
+2026-06-12 16:02:43.162 +05:30 [INF] Application is shutting down...

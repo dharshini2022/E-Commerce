@@ -1,0 +1,68 @@
+2026-06-13 22:32:04.878 +05:30 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while scanning assembly 'Ecommerce.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2026-06-13 22:32:05.023 +05:30 [WRN] The property 'ProductVariant.AvailableValues' is a collection or enumeration type with a value converter but with no value comparer. Set a value comparer to ensure the collection/enumeration elements are compared correctly.
+2026-06-13 22:32:05.039 +05:30 [WRN] The 'bool' property 'IsRead' on entity type 'Notification' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 22:32:05.039 +05:30 [WRN] The 'bool' property 'IsReleased' on entity type 'StockReservation' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 22:32:11.918 +05:30 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while scanning assembly 'Ecommerce.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2026-06-13 22:32:12.060 +05:30 [WRN] The property 'ProductVariant.AvailableValues' is a collection or enumeration type with a value converter but with no value comparer. Set a value comparer to ensure the collection/enumeration elements are compared correctly.
+2026-06-13 22:32:12.075 +05:30 [WRN] The 'bool' property 'IsRead' on entity type 'Notification' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 22:32:12.076 +05:30 [WRN] The 'bool' property 'IsReleased' on entity type 'StockReservation' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 22:32:12.315 +05:30 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-06-13 22:32:12.448 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-13 22:32:12.477 +05:30 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-06-13 22:32:12.482 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-06-13 22:32:12.483 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-06-13 22:32:12.483 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-06-13 22:32:12.486 +05:30 [INF] Applying migration '20260613170205_AddShippingFeeToShipment'.
+2026-06-13 22:32:12.507 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE orders RENAME COLUMN "PlatormCommission" TO "PlatformCommission";
+2026-06-13 22:32:12.517 +05:30 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE shipments ADD "ShippingFee" numeric NOT NULL DEFAULT 0.0;
+2026-06-13 22:32:12.518 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260613170205_AddShippingFeeToShipment', '10.0.8');
+2026-06-13 23:26:02.227 +05:30 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while scanning assembly 'Ecommerce.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2026-06-13 23:26:02.374 +05:30 [WRN] The property 'ProductVariant.AvailableValues' is a collection or enumeration type with a value converter but with no value comparer. Set a value comparer to ensure the collection/enumeration elements are compared correctly.
+2026-06-13 23:26:02.391 +05:30 [WRN] The 'bool' property 'IsRead' on entity type 'Notification' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 23:26:02.391 +05:30 [WRN] The 'bool' property 'IsReleased' on entity type 'StockReservation' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 23:26:10.665 +05:30 [WRN] No instantiatable types implementing `IEntityTypeConfiguration` were found while scanning assembly 'Ecommerce.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null'.
+2026-06-13 23:26:10.811 +05:30 [WRN] The property 'ProductVariant.AvailableValues' is a collection or enumeration type with a value converter but with no value comparer. Set a value comparer to ensure the collection/enumeration elements are compared correctly.
+2026-06-13 23:26:10.827 +05:30 [WRN] The 'bool' property 'IsRead' on entity type 'Notification' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 23:26:10.828 +05:30 [WRN] The 'bool' property 'IsReleased' on entity type 'StockReservation' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value 'False', since this is the CLR default for the 'bool' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+2026-06-13 23:26:11.018 +05:30 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-06-13 23:26:11.155 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2026-06-13 23:26:11.181 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-06-13 23:26:11.185 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-06-13 23:26:11.186 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-06-13 23:26:11.186 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-06-13 23:26:11.189 +05:30 [INF] Applying migration '20260613175602_AddReservedStockQtyToProductVariant'.
+2026-06-13 23:26:11.210 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE product_variants ADD "ReservedStockQty" integer NOT NULL DEFAULT 0;
+2026-06-13 23:26:11.211 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260613175602_AddReservedStockQtyToProductVariant', '10.0.8');
