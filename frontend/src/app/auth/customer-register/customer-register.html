@@ -1,0 +1,81 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="left-panel">
+      <div class="brand">
+        <span class="logo-hex">⬡</span>
+        <span class="brand-name">ShopHive</span>
+      </div>
+
+      <div class="left-content">
+        <h2>Join the Hive today.</h2>
+        <p class="tagline">All you need, One Hive!</p>
+        <ul class="benefits">
+          <li><span class="check">✓</span> Explore wide range of products</li>
+          <li><span class="check">✓</span> Exclusive deals & offers</li>
+          <li><span class="check">✓</span> Shop from verified vendors</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h1>Create account</h1>
+      <p class="subtitle">Sign up to discover and shop from verified vendors.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <label class="field-label">Full name <span class="req">*</span></label>
+        <input type="text" formControlName="fullName" placeholder="Dharshini Karthik" class="text-input" [class.invalid]="f['fullName'].invalid && f['fullName'].touched"/>
+        @if (f['fullName'].touched && f['fullName'].errors?.['required']) {
+          <div class="error-text">  Full name is required. </div>
+        }
+        @if (f['fullName'].touched && f['fullName'].errors?.['minlength']) {
+          <div class="error-text"> Full name must be at least 4 characters. </div>
+        }
+
+        <label class="field-label">Email address <span class="req">*</span></label>
+        <input type="text" formControlName="email" placeholder="name@example.com" class="text-input" [class.invalid]="f['email'].invalid && f['email'].touched" />
+        @if (f['email'].touched && f['email'].errors?.['required']) {
+          <div class="error-text"> Email address is required. </div>
+        }
+        @if (f['email'].touched && f['email'].errors?.['pattern']) {
+          <div class="error-text"> Enter a valid email ending with .com, .in or .org </div>
+        }
+
+        <label class="field-label">Password <span class="req">*</span></label>
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Minimum 5 characters" class="text-input password-input" [class.invalid]="f['password'].invalid && f['password'].touched" />
+          <span class="show-toggle" (click)="togglePassword()"> {{ showPassword ? 'Hide' : 'Show' }} </span>
+        </div>
+        @if (f['password'].touched && f['password'].errors?.['required']) {
+          <div class="error-text">  Password is required. </div>
+        }
+        @if (f['password'].touched && f['password'].errors?.['minlength']) {
+          <div class="error-text"> Password must be at least 8 characters. </div>
+        }
+
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="agreeTerms" />
+          <span>
+            I agree to the
+            <a href="javascript:void(0)">Terms &amp; Conditions</a> and
+            <a href="javascript:void(0)">Privacy Policy</a>
+          </span>
+        </label>
+        @if (f['agreeTerms'].touched && f['agreeTerms'].errors?.['required']) {
+          <div class="error-text"> You must agree to the Terms &amp; Conditions to continue. </div>
+        }
+
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="becomeVendor" />
+          <span> <strong>Become a Vendor</strong> — sell your products on ShopHive </span>
+        </label>
+        @if (f['becomeVendor'].value) {
+          <div class="info-banner"> Log In to enter Store details.</div>
+        }
+
+        <button type="submit" class="submit-btn">Create Account</button>
+
+        <p class="signin-text"> Already have an account? <a routerLink="/login">Sign in</a> </p>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="left-panel">
+      <div class="brand">
+        <span class="logo-hex">⬡</span>
+        <span class="brand-name">ShopHive</span>
+      </div>
+
+      <div class="left-content">
+        <h2>Grow your business.</h2>
+        <p class="tagline">Partner with ShopHive today!</p>
+        <ul class="benefits">
+          @for (item of benefits; track item) {
+            <li><span class="check">✓</span> {{ item }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h1>Register as Vendor</h1>
+      <p class="subtitle">Enter your store and business verification details.</p>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <label class="field-label">Store name <span class="req">*</span></label>
+        <input type="text" formControlName="storeName" placeholder="My Awesome Store" class="text-input" [class.invalid]="f['storeName'].invalid && f['storeName'].touched"/>
+        @if (f['storeName'].touched && f['storeName'].errors?.['required']) {
+          <div class="error-text">Store name is required.</div>
+        }
+        @if (f['storeName'].touched && f['storeName'].errors?.['minlength']) {
+          <div class="error-text">Store name must be at least 5 characters.</div>
+        }
+
+        <label class="field-label">Store email <span class="req">*</span></label>
+        <input type="text" formControlName="storeEmail" placeholder="store@example.com" class="text-input" [class.invalid]="f['storeEmail'].invalid && f['storeEmail'].touched" />
+        @if (f['storeEmail'].touched && f['storeEmail'].errors?.['required']) {
+          <div class="error-text">Store email is required.</div>
+        }
+        @if (f['storeEmail'].touched && (f['storeEmail'].errors?.['pattern'] || f['storeEmail'].errors?.['minlength'])) {
+          <div class="error-text">Enter a valid store email of at least 10 characters ending in .com, .in, .org or .co</div>
+        }
+
+        <label class="field-label">GST Number <span class="req">*</span></label>
+        <input type="text" formControlName="gstNumber" placeholder="22AAAAA1111A1Z1" class="text-input" [class.invalid]="f['gstNumber'].invalid && f['gstNumber'].touched" />
+        @if (f['gstNumber'].touched && f['gstNumber'].errors?.['required']) {
+          <div class="error-text">GST Number is required.</div>
+        }
+        @if (f['gstNumber'].touched && f['gstNumber'].errors?.['pattern']) {
+          <div class="error-text">Enter a valid 15-character GST Number (numbers and uppercase letters only).</div>
+        }
+
+        <label class="field-label">PAN Number <span class="req">*</span></label>
+        <input type="text" formControlName="panNumber" placeholder="ABCDE1234F" class="text-input" [class.invalid]="f['panNumber'].invalid && f['panNumber'].touched" />
+        @if (f['panNumber'].touched && f['panNumber'].errors?.['required']) {
+          <div class="error-text">PAN Number is required.</div>
+        }
+        @if (f['panNumber'].touched && f['panNumber'].errors?.['pattern']) {
+          <div class="error-text">PAN Number must be exactly 10 characters (uppercase letters and numbers).</div>
+        }
+
+        <label class="field-label">Description</label>
+        <textarea formControlName="description" placeholder="Briefly describe your store/products..." class="text-input textarea-input"></textarea>
+
+        <label class="field-label">Store Logo URL</label>
+        <input type="text" formControlName="logoUrl" placeholder="https://example.com/logo.png" class="text-input" />
+
+        <button type="submit" class="submit-btn">Register Store</button>
+
+        <p class="signin-text"> Already registered? <a routerLink="/login">Sign in</a> </p>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="page-wrapper">
+  <div class="card">
+    <div class="shield-container">
+      <div class="shield-icon">X</div>
+    </div>
+    <h1>Access Denied</h1>
+    <p class="subtitle">You do not have the permissions to access this page.</p>
+    
+    <button class="action-btn" (click)="handleAction()">
+      {{ isLoggedIn ? 'Go to Dashboard' : 'Back to Login' }}
+    </button>
+  </div>
+</div>
