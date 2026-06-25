@@ -1,6 +1,7 @@
 using System;
 using Hangfire;
 using Ecommerce.Contracts.Services;
+using Ecommerce.Contracts.Services;
 
 namespace Ecommerce.BLL
 {

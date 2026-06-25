@@ -14,7 +14,7 @@ namespace Ecommerce.DAL.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<ICollection<VendorSettlement>> GetSettlementsByVendorIdAsync(int vendorId)
+        public async Task<ICollection<VendorSettlement>> GetSettlementsByVendorId(int vendorId)
         {
             return await _dbContext.Set<VendorSettlement>()
                 .Include(vs => vs.Vendor)
@@ -24,7 +24,7 @@ namespace Ecommerce.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<ICollection<VendorSettlement>> GetSettlementsByOrderIdAsync(int orderId)
+        public async Task<ICollection<VendorSettlement>> GetSettlementsByOrderId(int orderId)
         {
             return await _dbContext.Set<VendorSettlement>()
                 .Include(vs => vs.Vendor)
@@ -32,7 +32,7 @@ namespace Ecommerce.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<ICollection<VendorSettlement>> GetSettlementsByStatusAsync(string status)
+        public async Task<ICollection<VendorSettlement>> GetSettlementsByStatus(string status)
         {
             if (!Enum.TryParse<SettlementStatus>(status, true, out var settlementStatus))
                 return new List<VendorSettlement>();

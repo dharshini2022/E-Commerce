@@ -3303,7 +3303,7 @@
             <line number="69" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByOrderIdAsync&gt;d__3" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByOrderId&gt;d__3" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3325,7 +3325,7 @@
             <line number="33" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByStatusAsync&gt;d__4" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByStatus&gt;d__4" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3361,7 +3361,7 @@
             <line number="45" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByVendorIdAsync&gt;d__2" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Ecommerce.DAL.Repositories.VendorSettlementRepository/&lt;GetSettlementsByVendorId&gt;d__2" filename="Ecommerce.DAL/Repositories/VendorSettlementRepository.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>

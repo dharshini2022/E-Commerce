@@ -89,7 +89,7 @@ namespace Ecommerce.BLL
 
         public async Task<ICollection<VendorSettlementDTO>> GetVendorSettlements(int vendorId)
         {
-            var settlements = await _vendorSettlementRepository.GetSettlementsByVendorIdAsync(vendorId);
+            var settlements = await _vendorSettlementRepository.GetSettlementsByVendorId(vendorId);
             return _mapper.Map<ICollection<VendorSettlementDTO>>(settlements);
         }
 

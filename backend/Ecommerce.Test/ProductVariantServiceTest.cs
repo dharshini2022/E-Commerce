@@ -118,6 +118,42 @@ namespace Ecommerce.Test
         }
 
         [Test]
+        public async Task AddVariant_ShouldUpdateExistingDefaultVariantToNonDefault_WhenNewVariantIsDefault()
+        {
+            var product = new Product { Id = 1, VendorId = 10 };
+            _mockProductRepo.Setup(r => r.GetById(1)).ReturnsAsync(product);
+
+            _mockCurrentUser.Setup(u => u.UserId).Returns(2);
+            _mockVendorRepo.Setup(r => r.GetByUserId(2)).ReturnsAsync(new Vendor { Id = 10 });
+            _mockVariantRepo.Setup(r => r.GetVariantsByProductId(1)).ReturnsAsync(new List<ProductVariant>());
+
+            var existingDefault = new ProductVariant { Id = 50, ProductId = 1, IsDefault = true, IsActive = true };
+            _mockVariantRepo.Setup(r => r.GetDefaultVariant(1)).ReturnsAsync(existingDefault);
+            _mockVariantRepo.Setup(r => r.Update(existingDefault.Id, existingDefault)).ReturnsAsync(existingDefault);
+
+            var request = new AddProductVariantRequest 
+            { 
+                Price = 15,
+                IsDefault = true,
+                AvailableValues = new Dictionary<string, string> { { "Color", "Red" } }
+            };
+            var variant = new ProductVariant { Price = 15, IsDefault = true, AvailableValues = request.AvailableValues };
+            _mockMapper.Setup(m => m.Map<ProductVariant>(request)).Returns(variant);
+
+            var created = new ProductVariant { Id = 100, Price = 15, ProductId = 1, IsDefault = true, AvailableValues = request.AvailableValues };
+            _mockVariantRepo.Setup(r => r.Create(variant)).ReturnsAsync(created);
+            _mockMapper.Setup(m => m.Map<ProductVariantResponse>(created)).Returns(new ProductVariantResponse { Id = 100 });
+
+            var result = await _variantService.AddVariant(1, request);
+
+            Assert.That(result.Id, Is.EqualTo(100));
+            Assert.That(variant.IsActive, Is.True);
+            Assert.That(variant.ProductId, Is.EqualTo(1));
+            Assert.That(existingDefault.IsDefault, Is.False);
+            _mockVariantRepo.Verify(r => r.Update(existingDefault.Id, It.Is<ProductVariant>(v => v.IsDefault == false)), Times.Once);
+        }
+
+        [Test]
         public void AddVariant_ShouldThrowUniquenessViolationException_WhenDuplicateVariantExists()
         {
             var product = new Product { Id = 1, VendorId = 10 };

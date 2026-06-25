@@ -39,9 +39,9 @@ namespace Ecommerce.BLL
         private readonly IServiceProvider _serviceProvider;
         private readonly IBackgroundJobScheduler _backgroundJobScheduler;
 
-        public const decimal PlatformCommissionRate = 0.05m;  
-        public const decimal VendorShippingRate = 0.02m;     
-        private const decimal TaxRate = 0.05m;                 
+        public const decimal VendorShippingRate = 0.01m;     
+        public const decimal PlatformCommissionRate = 0.02m;  
+        private const decimal TaxRate = 0.02m;                 
         public TimeSpan StockReleaseDelay { get; set; } = TimeSpan.FromMinutes(10);
 
         public OrderService(
@@ -290,10 +290,13 @@ namespace Ecommerce.BLL
             };
         }
 
-        public async Task<ICollection<OrderSummaryResponse>> GetVendorOrders()
+        public async Task<ICollection<OrderSummaryResponse>> GetVendorOrders(int? vendorId = null)
         {
-            var vendor = await _vendorRepository.GetByUserId(_currentUser.UserId)   ?? throw new KeyNotFoundException("Vendor profile not found for current user.");
-            var orders = await _orderRepository.GetOrdersByVendorId(vendor.Id);
+            if(!vendorId.HasValue){
+                var vendor = await _vendorRepository.GetByUserId(_currentUser.UserId)   ?? throw new KeyNotFoundException("Vendor profile not found for current user.");
+                vendorId = vendor.Id;
+            }
+            var orders = await _orderRepository.GetOrdersByVendorId(vendorId.Value);
             return _mapper.Map<ICollection<OrderSummaryResponse>>(orders);
         }
 

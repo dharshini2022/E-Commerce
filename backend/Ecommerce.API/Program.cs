@@ -134,6 +134,7 @@ builder.Services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IStockReservationRepository, StockReservationRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IAdminDashboardRepository, AdminDashboardRepository>();
 #endregion
 
 #region Service
@@ -155,6 +156,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IBackgroundJobScheduler, HangfireBackgroundJobScheduler>();
 builder.Services.AddScoped<IJobExecutor, JobExecutor>();
+builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 #endregion
 
 #region Authentication & Authorization
@@ -199,6 +201,19 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 #endregion
 
+#region CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+#endregion
+
 
 var app = builder.Build();
 
@@ -211,6 +226,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngular");
 
 app.UseRateLimiter();   
 

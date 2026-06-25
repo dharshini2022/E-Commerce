@@ -143,6 +143,19 @@ namespace Ecommerce.BLL.Mapper
                 .ForMember(DTO => DTO.ReviewImages, opt => opt.MapFrom(Model => Model.ReviewImages.Select(ri => ri.ImageUrl).ToList()))
                 .ReverseMap();
             #endregion
+
+            #region AdminDashboard
+            CreateMap<Order, RecentOrderDTO>()
+                .ForMember(DTO => DTO.CustomerName, opt => opt.MapFrom(Model => Model.User != null ? Model.User.FullName : string.Empty))
+                .ForMember(DTO => DTO.Amount, opt => opt.MapFrom(Model => Model.Total))
+                .ForMember(DTO => DTO.Status, opt => opt.MapFrom(Model => Model.Status.ToString().ToUpper()))
+                .ReverseMap();
+
+            CreateMap<OrderItem, TopSellingProductDTO>()
+                .ForMember(DTO => DTO.Name, opt => opt.MapFrom(Model => Model.Variant.Product.Name))
+                .ForMember(DTO => DTO.Category, opt => opt.MapFrom(Model => Model.Variant.Product.Category.Name))
+                .ReverseMap();
+            #endregion
         }
 
         private static string? MaskEmail(string? email)

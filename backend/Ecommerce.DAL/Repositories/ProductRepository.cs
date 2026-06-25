@@ -40,9 +40,9 @@ namespace Ecommerce.DAL.Repositories
             var query = _dbContext.Products
                 .Include(p => p.Vendor)
                 .Include(p => p.Category)
-                .Include(p => p.Variants)
+                .Include(p => p.Variants.Where(v => v.IsDefault))
                     .ThenInclude(v => v.VariantImages)
-                .Where(p => p.Status == ProductStatus.Active)
+                .Where(p => p.Status == ProductStatus.Active && p.Variants.Any(v => v.IsDefault))
                 .AsQueryable();
 
             if (categoryId.HasValue)

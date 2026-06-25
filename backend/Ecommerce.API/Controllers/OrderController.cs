@@ -51,6 +51,14 @@ namespace Ecommerce.API.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("vendor-orders/{id}")]
+        [Authorize(Roles = "Vendor")]
+        public async Task<IActionResult> GetVendorOrdersById([FromRoute] int id)
+        {
+            var orders = await _orderService.GetVendorOrders(id);
+            return Ok(orders);
+        }
+
 
         [HttpGet("vendor-orders")]
         [Authorize(Roles = "Vendor")]

@@ -58,6 +58,16 @@ namespace Ecommerce.BLL
             variant.ProductId = productId;
             variant.IsActive = true;
 
+            if (variant.IsDefault)
+            {
+                var existingDefault = await _variantRepository.GetDefaultVariant(productId);
+                if (existingDefault != null)
+                {
+                    existingDefault.IsDefault = false;
+                    await _variantRepository.Update(existingDefault.Id, existingDefault);
+                }
+            }
+
             var created = await _variantRepository.Create(variant);
             return _mapper.Map<ProductVariantResponse>(created);
         }

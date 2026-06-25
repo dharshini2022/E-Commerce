@@ -146,7 +146,7 @@ namespace Ecommerce.Test
             var pageRequest = new PageRequest { PageNumber = 1, PageSize = 10, SearchTerm = "test" };
             var list = new List<VendorSettlement> { new VendorSettlement { Id = 1 } };
             
-            _mockSettlementRepo.Setup(r => r.GetSettlementsByVendorIdAsync(10)).ReturnsAsync(list);
+            _mockSettlementRepo.Setup(r => r.GetSettlementsByVendorId(10)).ReturnsAsync(list);
             _mockSettlementRepo.Setup(r => r.GetPagedSettlementsWithDetails("test", 1, 10)).ReturnsAsync((list, 1));
 
             var expected = new List<VendorSettlementDTO> { new VendorSettlementDTO { Id = 1 } };

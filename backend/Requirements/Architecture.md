@@ -123,7 +123,7 @@ Each extends `IRepository<int, T>` with domain-specific query methods:
 | `IReturnRepository` | `GetReturnsByUserIdAsync`, `GetReturnsByVendorIdAsync`, `GetUnapprovedReturnsAsync` |
 | `IReviewRepository` | `GetReviewsByProductIdAsync`, `GetReviewsByUserIdAsync`, `GetReviewsByVendorIdAsync` |
 | `INotificationRepository` | `GetNotificationsByUserIdAsync`, `MarkAllAsReadAsync` |
-| `IVendorSettlementRepository` | `GetSettlementsByVendorIdAsync`, `GetSettlementsByStatusAsync` |
+| `IVendorSettlementRepository` | `GetSettlementsByVendorId`, `GetSettlementsByStatus` |
 
 #### Service Interfaces (Ecommerce.Contracts/Services/)
 
