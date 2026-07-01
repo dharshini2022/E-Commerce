@@ -1,0 +1,35 @@
+<div class="products-list-page">
+  
+  <app-product-sidebar 
+    [class.open]="isSidebarOpen()"
+    [categories]="categories()" 
+    [selectedCategoryId]="selectedCategoryId()" 
+    [minPrice]="minPrice()"
+    [maxPrice]="maxPrice()"
+    (applyFilters)="onApplyFilters($event)"
+    (clearFilters)="onClearFilters()"
+    (closeSidebar)="toggleSidebar()">
+  </app-product-sidebar>
+
+  <div class="products-main-content">
+    <app-product-sort 
+      [totalProducts]="totalProducts()" 
+      [currentSort]="draftSort()"
+      (sortChanged)="onSortChanged($event)"
+      (toggleSidebar)="toggleSidebar()">
+    </app-product-sort>
+
+    <app-products-list 
+      [products]="products()" 
+      [loading]="loading()" 
+      [loadingMore]="loadingMore()" 
+      [hasNext]="hasNext"
+      (loadNextPage)="onLoadNextPage()">
+    </app-products-list>
+  </div>
+
+  @if (isSidebarOpen()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+
+</div>

@@ -1,0 +1,280 @@
+@if (loading()) {
+  <div class="loading-state-container">
+    <div class="spinner"></div>
+    <p>Loading product details...</p>
+  </div>
+} @else if (!product()) {
+  <div class="empty-state-container">
+    <i class="bi bi-box-seam empty-icon"></i>
+    <h3>Product Not Found</h3>
+    <p>We couldn't retrieve the details for this product. It may have been archived or removed.</p>
+    <a [routerLink]="['/customer-home/products-list']" class="back-btn">Back to Catalog</a>
+  </div>
+} @else {
+  <div class="product-detail-page">
+    <div class="top-meta-row">
+      <div class="breadcrumbs">
+        <a [routerLink]="['/customer-home/products-list']" class="breadcrumb-link">Home</a>
+        @for (segment of categoryBreadcrumbs(); track segment) {
+          <span class="breadcrumb-separator">></span>
+          @if (getCategoryIdForSegment(segment); as catId) {
+            <a [routerLink]="['/customer-home/products-list']" [queryParams]="{ categoryId: catId }" class="breadcrumb-link capitalize">
+              {{ segment }}
+            </a>
+          } @else {
+            <span class="breadcrumb-segment capitalize">{{ segment }}</span>
+          }
+        }
+        <span class="breadcrumb-separator">></span>
+        <span class="breadcrumb-current">{{ product()!.name }}</span>
+      </div>
+    </div>
+
+    <div class="product-main-grid">
+      <div class="gallery-container">
+        <div class="main-image-viewport">
+          @if (mainImageUrl()) {
+            <img [src]="mainImageUrl()" [alt]="product()!.name" class="gallery-main-image" />
+          } @else {
+            <div class="placeholder-image">
+              <i class="bi bi-image"></i>
+              <span class="placeholder-text">{{ product()!.name }}</span>
+            </div>
+          }
+
+          @if ((selectedVariant()?.variantImages?.length || 0) > 1) {
+            <button class="nav-arrow-btn left" (click)="prevImage()" aria-label="Previous image">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="nav-arrow-btn right" (click)="nextImage()" aria-label="Next image">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          }
+
+          @if ((selectedVariant()?.variantImages?.length || 0) > 1) {
+            <div class="carousel-indicators">
+              @for (img of selectedVariant()!.variantImages; track img.id; let idx = $index) {
+                <span 
+                  class="indicator-dot" 
+                  [class.active]="activeImageIndex() === idx"
+                  (click)="setImageIndex(idx)">
+                </span>
+              }
+            </div>
+          }
+        </div>
+
+        @if ((selectedVariant()?.variantImages?.length || 0) > 0) {
+          <div class="thumbnails-container">
+            @for (img of selectedVariant()!.variantImages; track img.id; let idx = $index) {
+              <div 
+                class="thumbnail-wrapper" 
+                [class.active]="activeImageIndex() === idx"
+                (click)="setImageIndex(idx)">
+                <img [src]="img.imageUrl" alt="Thumbnail" />
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="info-container">
+        <h1 class="product-title">{{ product()!.name }}</h1>
+        
+        <div class="rating-reviews-row">
+          <span class="rating-score">
+            {{ averageRatingValue() }} <i class="bi bi-star-fill star-icon-small"></i>
+          </span>
+          <span class="reviews-count">| {{ reviews().length }} {{ reviews().length === 1 ? 'review' : 'reviews' }}</span>
+        </div>
+
+        @if (product()!.variants && product()!.variants.length > 0) {
+          <div class="variant-selector-section">
+            <h4 class="section-title">Select Variant — <span>{{ getVariantDisplayValue(selectedVariant()!) }}</span></h4>
+            <div class="variant-bubbles-row">
+              @for (v of product()!.variants; track v.id) {
+                <button 
+                  class="variant-bubble" 
+                  [class.active]="selectedVariant()?.id === v.id"
+                  [style.background-color]="getVariantColor(v)"
+                  [style.background-image]="v.variantImages && v.variantImages.length > 0 ? 'url(' + v.variantImages[0].imageUrl + ')' : 'none'"
+                  (click)="selectVariant(v.id)"
+                  [title]="getVariantLabel(v)">
+                  @if (!getVariantColor(v) && (!v.variantImages || v.variantImages.length === 0)) {
+                    <span class="variant-text-fallback">{{ getVariantDisplayValue(v) | slice:0:2 }}</span>
+                  }
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="pricing-card-row">
+          <div class="price-details">
+            @if (discountPercent() > 0) {
+              <span class="discount-badge-percentage">-{{ discountPercent() }}%</span>
+              <span class="current-price">Rs. {{ discountedPrice().toLocaleString() }}</span>
+              <div class="mrp-price">M.R.P.: <s>Rs. {{ originalPrice().toLocaleString() }}</s> <span class="tax-info">Plus Taxes</span></div>
+            } @else {
+              <span class="current-price">Rs. {{ originalPrice().toLocaleString() }}</span>
+              <div class="mrp-price"><span class="tax-info">Plus Taxes</span></div>
+            }
+          </div>
+
+          @if (discounts().length > 0) {
+            <div class="discounts-container">
+              <span class="coupons-label"><i class="bi bi-tags"></i> Available Offers (Click to Apply)</span>
+              <div class="coupons-list">
+                @for (d of discounts(); track d.id) {
+                  <div 
+                    class="discount-code-card" 
+                    [class.selected]="selectedDiscount()?.id === d.id"
+                    (click)="selectDiscount(d)">
+                    <div class="coupon-header">
+                      <span class="code-text">{{ d.code }}</span>
+                      @if (selectedDiscount()?.id === d.id) {
+                        <span class="applied-badge"><i class="bi bi-patch-check-fill"></i> Applied</span>
+                      }
+                    </div>
+                    <div class="coupon-body">
+                      {{ d.type === 'Percentage' ? d.value + '% OFF' : 'Rs. ' + d.value + ' OFF' }}
+                      <span class="min-spend">Min. spend Rs. {{ d.minOrderValue }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (userRole() !== 'Vendor') {
+          <div class="action-buttons-row">
+            @if (selectedVariant() && selectedVariant()!.stockQty > 0) {
+              <div class="quantity-selector">
+                <button (click)="decrementQty()" class="qty-btn" aria-label="Decrease quantity">
+                  <i class="bi bi-dash"></i>
+                </button>
+                <span class="qty-value">{{ quantity() }}</span>
+                <button (click)="incrementQty()" class="qty-btn" aria-label="Increase quantity">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+              
+              <button class="add-to-cart-btn" (click)="addToCart()">
+                <i class="bi bi-cart-plus"></i> Add to Cart
+              </button>
+            } @else {
+              <button class="add-to-cart-btn disabled" disabled>
+                <i class="bi bi-slash-circle"></i> Out of Stock
+              </button>
+            }
+
+            <button class="add-to-wishlist-btn" [class.active]="isWishlisted()" (click)="toggleWishlist()">
+              <i class="bi" [class.bi-heart-fill]="isWishlisted()" [class.bi-heart]="!isWishlisted()"></i> 
+              {{ isWishlisted() ? 'Wishlisted' : 'Add to Wishlist' }}
+            </button>
+          </div>
+        } @else {
+          <div class="action-buttons-row vendor-actions-row">
+            <button class="add-var-btn" (click)="addVariant()" style="background-color: #3b59eb; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+              </svg>
+              Add Variant
+            </button>
+            <button class="update-var-btn" (click)="updateVariant()" [disabled]="!selectedVariant()" style="background-color: #f4f4f5; color: #1c1c1e; border: 1px solid #e5e7eb; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+              Update Variant
+            </button>
+            <button 
+              class="deactivate-var-btn" 
+              [style.background-color]="selectedVariant()?.isActive === false ? '#ecfdf5' : '#fef2f2'"
+              [style.color]="selectedVariant()?.isActive === false ? '#10b981' : '#dc2626'"
+              [style.border]="selectedVariant()?.isActive === false ? '1px solid #a7f3d0' : '1px solid #fca5a5'"
+              (click)="deactivateVariant()" 
+              [disabled]="!selectedVariant()"
+              style="padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708"/>
+              </svg>
+              {{ selectedVariant()?.isActive === false ? 'Activate Variant' : 'Deactivate Variant' }}
+            </button>
+          </div>
+        }
+
+        @if (cartMessage()) {
+          <div class="toast-alert success">
+            <i class="bi bi-check-circle-fill"></i> {{ cartMessage() }}
+          </div>
+        }
+        @if (wishlistMessage()) {
+          <div class="toast-alert info">
+            <i class="bi bi-info-circle-fill"></i> {{ wishlistMessage() }}
+          </div>
+        }
+
+        @if (product()!.description) {
+          <p class="product-description-para"> <span style="font-weight: bold;">Description: </span> {{product()!.description }}</p>
+        }
+
+        @if ((userRole() === 'Admin' || userRole() === 'Vendor') && selectedVariant()) {
+          <p class="stock-available-para">Stock Available: <strong>{{ selectedVariant()!.stockQty }}</strong></p>
+        }
+
+        <div class="features-section">
+          <h4 class="features-title">Product Features</h4>
+          <table class="features-table">
+            <tbody>
+              <tr>
+                <td>Brand</td>
+                <td>{{ product()!.storeName || 'Premium' }}</td>
+              </tr>
+              <tr>
+                <td>Model Series</td>
+                <td>{{ product()!.name }}</td>
+              </tr>
+              @for (prop of selectedVariantProperties(); track prop.key) {
+                <tr>
+                  <td class="capitalize">{{ prop.key }}</td>
+                  <td>{{ prop.value }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="reassurance-row">
+          <div class="reassurance-item">
+            <div class="icon-circle"><i class="bi bi-arrow-left-right"></i></div>
+            <div class="text-block">
+              <span class="label">7 Days</span>
+              <span class="sub">Replacement</span>
+            </div>
+          </div>
+          <div class="reassurance-item">
+            <div class="icon-circle"><i class="bi bi-shield-check"></i></div>
+            <div class="text-block">
+              <span class="label">Verified</span>
+              <span class="sub">Product</span>
+            </div>
+          </div>
+          <div class="reassurance-item">
+            <div class="icon-circle"><i class="bi bi-chat-square-text"></i></div>
+            <div class="text-block">
+              <span class="label">24x7</span>
+              <span class="sub">Customer Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-vendor-basic-profile [vendor]="vendor()"></app-vendor-basic-profile>
+
+    <app-product-review [reviews]="reviews()" [productAverageRating]="product()?.averageRating || 0"></app-product-review>
+  </div>
+}

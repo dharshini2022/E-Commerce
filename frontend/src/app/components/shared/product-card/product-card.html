@@ -1,0 +1,91 @@
+<div class="product-card" [routerLink]="[detailRoute(), product.id]" style="cursor: pointer;">
+  <div class="media-container">
+    @if(discountInfo().label){
+      <div class="discount-badge">{{ discountInfo().label }} </div>
+    }
+    
+    @if(role() == 'Customer'){
+      <button class="wishlist-btn" (click)="toggleWishlist($event)" [class.active]="isWishlisted()" aria-label="Add to Wishlist">
+        <i class="bi bi-heart"></i>
+      </button>
+    }
+    
+    <div class="image-wrapper">
+      @if(defaultVariant() && defaultVariant()!.variantImages && defaultVariant()!.variantImages.length > 0){
+        <img [src]="defaultVariant()!.variantImages[0].imageUrl" [alt]="product.name" class="product-image" />
+      } @else {
+        <div class="placeholder-image">
+          <i class="bi bi-image"></i>
+          <span class="placeholder-text">{{ product.name }}</span>
+        </div>
+      }  
+    </div>
+
+    <div class="carousel-dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <div class="card-info">
+    <div class="brand-name">{{ product.storeName || 'Store' }}</div>
+    <h3 class="product-name" [title]="product.name">{{ product.name }}</h3>
+
+    @if(getReviewCount() > 0){
+      <div class="rating-row">
+        <div class="rating-badge">
+          <i class="bi bi-star-fill star-icon"></i>
+          <span class="rating-value">{{ getRating() }}</span>
+          <span class="review-count">({{ getReviewCount() }})</span>
+        </div>
+      </div>
+    }
+    
+
+    <div class="card-footer">
+      <div class="price-container">
+        <ng-container *ngIf="discountInfo().label; else noDiscount">
+          <span class="original-price">Rs. {{ originalPrice().toFixed(2) }}</span>
+          <span class="current-price">Rs. {{ discountInfo().discountedPrice.toFixed(2) }}</span>
+        </ng-container>
+        <ng-template #noDiscount>
+          <span class="current-price">Rs. {{ originalPrice().toFixed(2) }}</span>
+        </ng-template>
+      </div>
+
+      @switch (role()) {
+        @case ('Admin'){
+          <div class="operational-stats">
+            <span class="stock-qty" [class.low-stock]="defaultVariant() && defaultVariant()!.stockQty < 10" [class.out-of-stock]="!defaultVariant() || defaultVariant()!.stockQty <= 0">
+              {{ defaultVariant() ? defaultVariant()!.stockQty : 0 }} in stock
+            </span>
+            <span class="orders-count">
+              {{ defaultVariant() ? defaultVariant()!.orderCount : 0 }} orders
+            </span>
+          </div>
+        }
+        @case ('Vendor') {
+          <div class="operational-stats">
+            <span class="stock-qty" [class.low-stock]="defaultVariant() && defaultVariant()!.stockQty < 10" [class.out-of-stock]="!defaultVariant() || defaultVariant()!.stockQty <= 0">
+              {{ defaultVariant() ? defaultVariant()!.stockQty : 0 }} in stock
+            </span>
+            <span class="orders-count">
+              {{ defaultVariant() ? defaultVariant()!.orderCount : 0 }} orders
+            </span>
+          </div>
+        }
+        @default {
+          @if (defaultVariant()) {
+            @if (defaultVariant()!.stockQty < 0) {
+              <span class="out-of-stock" >Out of Stock</span>
+            }
+            @else if (defaultVariant()!.stockQty < 10) {
+              <span class="low-stock">Low Stock</span>
+            }
+          }
+        }
+      }
+    </div>
+  </div>
+</div>

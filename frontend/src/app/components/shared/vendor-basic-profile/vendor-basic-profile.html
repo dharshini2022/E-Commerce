@@ -1,0 +1,51 @@
+<div class="vendor-profile-section">
+  <h3 class="supplied-by-title">Supplied By</h3>
+  
+  @if (vendor) {
+    <div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-logo-wrapper">
+          @if (vendor.logoUrl) {
+            <img [src]="vendor.logoUrl" [alt]="vendor.storeName" class="vendor-logo" />
+          } @else {
+            <div class="vendor-logo-placeholder">
+              <i class="bi bi-shop"></i>
+            </div>
+          }
+        </div>
+        
+        <div class="vendor-info-block">
+          <h4 class="vendor-name">{{ vendor.storeName }}</h4>
+          <a href="mailto:{{ vendor.storeEmail }}" class="vendor-email">
+            <i class="bi bi-envelope"></i> {{ vendor.storeEmail }}
+          </a>
+        </div>
+        
+        <div class="vendor-stats-block">
+          <div class="stat-item">
+            <span class="stat-val"><i class="bi bi-star-fill star-icon-small"></i> 4.9</span>
+            <span class="stat-lbl">Seller Rating</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">2,100+</span>
+            <span class="stat-lbl">Items Sold</span>
+          </div>
+          <button class="visit-store-btn" [routerLink]="['/customer-home/products-list']">
+            Visit Store <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      @if (vendor.description) {
+        <p class="vendor-desc">{{ vendor.description }}</p>
+      } @else {
+        <p class="vendor-desc">Verified merchant specializing in high-quality items. Trusted seller offering fast shipping and great customer satisfaction.</p>
+      }
+    </div>
+  } @else {
+    <div class="vendor-card-placeholder">
+      <div class="spinner-small"></div>
+      <p>Loading vendor profile...</p>
+    </div>
+  }
+</div>

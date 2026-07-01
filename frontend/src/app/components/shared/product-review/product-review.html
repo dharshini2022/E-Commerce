@@ -1,0 +1,91 @@
+<div class="reviews-section">
+  <h3 class="reviews-main-title">Reviews and Ratings</h3>
+
+  <div class="reviews-split-grid">
+    <div class="rating-summary-card">
+      <div class="average-rating-circle">
+        <span class="large-rating">{{ averageRatingValue() }}</span>
+        <div class="stars-row">
+          @for (star of getStarArray(averageRatingValue()); track $index) {
+            @if (star === 1) {
+              <i class="bi bi-star-fill star-gold"></i>
+            } @else if (star === 0.5) {
+              <i class="bi bi-star-half star-gold"></i>
+            } @else {
+              <i class="bi bi-star star-grey"></i>
+            }
+          }
+        </div>
+        <span class="total-reviews-count">Based on {{ reviews.length }} reviews</span>
+      </div>
+
+      <div class="distribution-bars">
+        @for (star of [5, 4, 3, 2, 1]; track star) {
+          <div class="bar-row">
+            <span class="star-label">{{ star }} ★</span>
+            <div class="progress-bar-container">
+              <div class="progress-fill" [style.width.%]="ratingPercentages()[star]"></div>
+            </div>
+            <span class="percentage-label">{{ ratingPercentages()[star] }}%</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="reviews-list-container">
+      @if (reviews.length === 0) {
+        <div class="no-reviews-card">
+          <i class="bi bi-chat-left-dots no-reviews-icon"></i>
+          <h4>No reviews yet</h4>
+          <p>Be the first to buy this product and write a review!</p>
+        </div>
+      } @else {
+        <div class="reviews-scroll-list">
+          @for (r of reviews; track r.id) {
+            <div class="review-card">
+              <div class="review-card-header">
+                <div class="reviewer-avatar">
+                  {{ r.userFullName | slice:0:2 | uppercase }}
+                </div>
+                <div class="reviewer-meta">
+                  <div class="reviewer-name-row">
+                    <span class="reviewer-name">{{ r.userFullName }}</span>
+                    <span class="verified-purchase-badge"><i class="bi bi-check-circle-fill"></i> Verified Purchase</span>
+                  </div>
+                  <span class="review-date">{{ r.createdAt | date:'longDate' }}</span>
+                </div>
+                
+                <div class="review-rating-stars">
+                  @for (star of getStarArray(r.rating); track $index) {
+                    @if (star === 1) {
+                      <i class="bi bi-star-fill star-gold"></i>
+                    } @else if (star === 0.5) {
+                      <i class="bi bi-star-half star-gold"></i>
+                    } @else {
+                      <i class="bi bi-star star-grey"></i>
+                    }
+                  }
+                </div>
+              </div>
+              
+              <div class="review-card-body">
+                <h5 class="review-title">{{ r.title }}</h5>
+                @if (r.body) {
+                  <p class="review-body-text">{{ r.body }}</p>
+                }
+
+                @if (r.reviewImages && r.reviewImages.length > 0) {
+                  <div class="review-images-row">
+                    @for (img of r.reviewImages; track img) {
+                      <img [src]="img" alt="Review Photo" class="review-thumbnail-img" />
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

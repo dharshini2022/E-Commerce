@@ -1,0 +1,93 @@
+<div class="sidebar-container">
+  <div class="sidebar-header">
+    <div class="header-left">
+      <i class="bi bi-funnel funnel-icon"></i>
+      <span class="header-title">Filters</span>
+    </div>
+    <div class="header-right">
+      <button class="clear-all-btn" (click)="clearFilters.emit()">Clear all</button>
+      <button class="close-btn" (click)="closeSidebar.emit()" aria-label="Close sidebar">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="sidebar-content">
+    <div class="filter-group">
+      <h4 class="section-title">Category</h4>
+      <div class="category-list">
+        @for (cat of categories(); track cat.id) {
+          <button 
+            class="category-btn" 
+            [class.active]="localSelectedCategoryId() === cat.id"
+            (click)="onCategoryClick(cat.id)">
+            <span class="category-name">{{ cat.name }}</span>
+            @if (cat.productCount !== undefined) {
+              <span class="category-count">{{ cat.productCount }}</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h4 class="section-title" style="margin: 0;">Price</h4>
+        <button class="clear-price-btn" (click)="onClearPrice()" style="background: none; border: none; color: #3b59eb; font-weight: 700; font-size: 13px; cursor: pointer; padding: 0;">CLEAR</button>
+      </div>
+      
+      <div class="slider-container" style="position: relative; width: 100%; height: 6px; background: #e5e7eb; border-radius: 3px; margin: 16px 0 10px 0;">
+        <div class="slider-track" [style.left.%]="minPercent()" [style.right.%]="maxPercent()" style="position: absolute; height: 6px; background-color: #3b59eb; border-radius: 3px; z-index: 1;"></div>
+        <input 
+          type="range" 
+          class="price-slider-input" 
+          min="0" 
+          max="1000000" 
+          step="1000"
+          [value]="localMinPrice()" 
+          (input)="onMinPriceInput($event)" />
+        <input 
+          type="range" 
+          class="price-slider-input" 
+          min="0" 
+          max="1000000" 
+          step="1000"
+          [value]="localMaxPrice()" 
+          (input)="onMaxPriceInput($event)" />
+      </div>
+
+      <!-- Ticks below the slider -->
+      <div class="slider-ticks" style="display: flex; justify-content: space-between; padding: 0 4px; margin-bottom: 20px;">
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+        <span class="tick-dot" style="width: 4px; height: 4px; border-radius: 50%; background-color: #c7c7cc;"></span>
+      </div>
+
+      <!-- Select Dropdowns below as text -->
+      <div class="price-select-row" style="display: flex; align-items: center; gap: 12px; margin-top: 16px;">
+        <select class="price-select" [value]="localMinPrice()" (change)="onMinSelectChange($event)">
+          @for (val of getMinPriceOptions(); track val) {
+            <option [value]="val" [selected]="val === localMinPrice()">{{ val | number }}</option>
+          }
+        </select>
+        <span class="to-text" style="font-size: 15px; color: #8e8e93;">to</span>
+        <select class="price-select" [value]="localMaxPrice()" (change)="onMaxSelectChange($event)">
+          @for (val of getMaxPriceOptions(); track val) {
+            <option [value]="val" [selected]="val === localMaxPrice()">{{ val | number }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="apply-container">
+    <button class="apply-btn" (click)="onApplyClick()">Apply Filters</button>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="scroll-container" #scrollContainer (scroll)="onScroll($event)">
+  <div class="products-grid-scroll">
+    
+    @if (loading() && products().length === 0) {
+      <div class="catalog-loader-container">
+        <div class="loader-spinner"></div>
+        <p>Loading curated product catalog...</p>
+      </div>
+    } @else if (products().length === 0) {
+      <div class="empty-catalog-message">
+        <div class="icon">🔍</div>
+        <h5>No products match your current filters</h5>
+        <p>Try selecting a different category or clearing all filters.</p>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (p of products(); track p.id) {
+          <app-product-card [product]="p"></app-product-card>
+        }
+      </div>
+
+      <div #sentinel class="sentinel-element">
+        @if (loadingMore()) {
+          <div class="sentinel-loader">
+            <div class="mini-spinner"></div>
+            <span>Loading more products...</span>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<button 
+  class="scroll-to-top-btn" 
+  [class.visible]="showScrollToTop()" 
+  (click)="scrollToTop()" 
+  aria-label="Scroll to top of product list">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+  </svg>
+</button>
